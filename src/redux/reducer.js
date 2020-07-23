@@ -4,6 +4,7 @@ import {
     GET_IMAGE_DATA,
     IMAGE_DATA_ERROR,
     GET_DATE,
+    GET_FAVORITE_IMAGE,
 } from './actionTypes';
 import { currentDate } from '../util/helper';
 
@@ -22,6 +23,8 @@ const imageReducer = (state = initialState, action) => {
             return { ...state, loading: true, imageData: {}, error: null};
         case GET_IMAGE_DATA:
             return { ...state, loading: false, imageData: action.payload.imageData };
+        case GET_FAVORITE_IMAGE:
+            return { ...state, imageData: action.payload.imageData}
         case IMAGE_DATA_ERROR:
             return { ...state, loading: false, error: action.payload.error, imageData: {} }
         case GET_DATE: 

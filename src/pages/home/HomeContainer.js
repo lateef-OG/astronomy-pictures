@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getImageData, selectDate } from '../../redux/actions';
+import { getImageData, selectDate, toggleFavourite } from '../../redux/actions';
 import { isOjectEmpty, getDate, currentDate, getPrevDate, getNextDate, compareNextDate  } from '../../util/helper';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
@@ -40,6 +40,10 @@ export default function HomeContainer() {
         dispatch(getImageData(nextDate));
     }
 
+    const handleFavouriteToggle = () => {
+        dispatch(toggleFavourite(date));
+    }
+
     // console.log("loading", loading);
     // console.log("imageData", imageData);
     // console.log("error", error);
@@ -54,7 +58,8 @@ export default function HomeContainer() {
     let imageUrl = "";
     let loaderOrError;
     let mediaIsVideo = false;
-    let shouldClickNext = compareNextDate(date)
+    let FavouriteImage = false;
+    let shouldClickNext = compareNextDate(date);
 
     if(loading){
         loaderOrError = <Loader customClass="loader"/>
@@ -65,9 +70,10 @@ export default function HomeContainer() {
     }
 
     if(!loading && !isOjectEmpty(imageData)){
-        const { title, explanation, url, media_type } = imageData;
+        const { title, explanation, url, media_type, isFavourite } = imageData;
         imageName = title;
         description = explanation;
+        FavouriteImage = isFavourite;
         if (media_type === "image") imageUrl = url;
         if (media_type === "video") {
             mediaIsVideo = true;
@@ -108,7 +114,8 @@ export default function HomeContainer() {
             </div>
             <div className="mb-5 favorite-date">
                 <Icon 
-                    customClass="far fa-heart heart"
+                    customClass={FavouriteImage ? "fas fa-heart heart red" : "far fa-heart heart"}
+                    handleClick={loading || error ? null : handleFavouriteToggle}
                 />
                 <input type="date" value={selectedDate} onChange={handleChange} max={currentDate()}/>
             </div>
