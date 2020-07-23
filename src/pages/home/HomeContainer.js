@@ -1,33 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getImageData, selectDate, toggleFavourite } from '../../redux/actions';
+import { getImageData, toggleFavourite, getFavouriteImages } from '../../redux/actions';
 import { isOjectEmpty, getDate, currentDate, getPrevDate, getNextDate, compareNextDate  } from '../../util/helper';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
+import Modal from '../../components/modal/Modal';
+import ImageCard from '../../components/imageCard/ImageCard';
 
 import './home.css';
 
 export default function HomeContainer() {
     
-    const { loading, imageData, error, date } = useSelector(
+    const { loading, imageData, error, date, favouriteImages } = useSelector(
         state => state.image
     );
 
     const [ selectedDate, setSelectedDate ] = useState(date);
+    const [ showModal, setshowModal ] = useState(false);
+
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getFavouriteImages());
+        dispatch(getImageData(date));
+    }, [dispatch, date]);
 
     const handleChange = e => {
         const date = getDate(e.target.value)
         setSelectedDate(date);
 
-        dispatch(selectDate(date));
         dispatch(getImageData(date));
     }
 
     const handlePrevDate = () => {
         const prevDate = getPrevDate(date);
         setSelectedDate(prevDate);
-        dispatch(selectDate(prevDate));
 
         dispatch(getImageData(prevDate));
     }
@@ -35,7 +42,6 @@ export default function HomeContainer() {
     const handleNextDate = () => {
         const nextDate = getNextDate(date);
         setSelectedDate(nextDate);
-        dispatch(selectDate(nextDate));
 
         dispatch(getImageData(nextDate));
     }
@@ -43,15 +49,21 @@ export default function HomeContainer() {
     const handleFavouriteToggle = () => {
         dispatch(toggleFavourite(date));
     }
+    const viewFavouriteImage = (item) => {
+        dispatch(getImageData(item));
 
-    // console.log("loading", loading);
-    // console.log("imageData", imageData);
-    // console.log("error", error);
-    // console.log("store date", date);
-    // console.log("selected date", selectedDate);
+        setshowModal(!showModal);
+    }
 
-    // console.log("empty object", isOjectEmpty({}))
-    // console.log(compareNextDate(date));
+    const removeFavouriteImage = (item) => {
+        dispatch(toggleFavourite(item));
+        dispatch(getFavouriteImages());
+        dispatch(getImageData(date));
+    }
+
+    const toggleModal = () => {
+        setshowModal(!showModal);
+    }
 
     let imageName = "";
     let description = "";
@@ -86,10 +98,6 @@ export default function HomeContainer() {
         };
     }
 
-    useEffect(() => {
-        dispatch(getImageData(date));
-    }, [dispatch, date]);
-
     return (
         <div className="container home-page">
             <h2 className="mb-4">NASA picture of the day</h2>
@@ -117,11 +125,30 @@ export default function HomeContainer() {
                     customClass={FavouriteImage ? "fas fa-heart heart red" : "far fa-heart heart"}
                     handleClick={loading || error ? null : handleFavouriteToggle}
                 />
+                <button className="btn btn-secondary ml-2" onClick={toggleModal}>View Favorites</button>
                 <input type="date" value={selectedDate} onChange={handleChange} max={currentDate()}/>
             </div>
             <div className="description">
                 <p>{description}</p>
             </div>
+            <Modal show={showModal} toggleModal={toggleModal} >
+                <div className="favourites">
+                    <h4>Favourite Images</h4>
+                    {
+                        favouriteImages.map(image => {
+                            const { date } = image;
+                            return(
+                                <ImageCard 
+                                    key={date}
+                                    imageData={image}
+                                    viewImage={viewFavouriteImage}
+                                    removeImage={removeFavouriteImage}
+                                />
+                            )
+                        })
+                    }
+                </div>
+            </Modal>
         </div>
     )
 }

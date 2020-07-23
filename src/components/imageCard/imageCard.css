@@ -1,0 +1,40 @@
+.image-card{
+    background: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0px 1px 4px rgba(13, 14, 30, 0.05);
+    padding: 15px;
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.image-card > .image-container{
+    height: 100px;
+    width: 100px;
+    min-width: 100px;
+    border-radius: 5px;
+    background: #999999;
+    margin-right: 20px;
+}
+
+.image-card > .image-container img{
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.image-card > .image-container p{
+    margin-bottom: 0;
+}
+
+.image-card .details{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.image-card h5{
+    font-weight: normal;
+    /* word-break: break-all; */
+    font-size: 18px;
+}

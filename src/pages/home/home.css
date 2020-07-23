@@ -52,16 +52,28 @@ i.red{
 
 .favorite-date{
     width: 100%;
-    /* padding: 0 10%; */
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
+.favorite-date input{
+    margin-left: auto;
+}
+
+.description{
+    max-width: 70%;
+}
+
 .description > p{
-    text-align: center;
+    text-align: justify;
 }
 
 .video-error{
     text-align: center;
 }
+
+.favourites > h4{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
