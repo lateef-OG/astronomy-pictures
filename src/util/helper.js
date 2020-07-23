@@ -16,3 +16,12 @@ export const compareNextDate = date => {
     const formattedDate = getDate(date);
     return formattedDate < today;
 }
+
+export const ObjectToArray = obj => {
+    let array = [];
+    Object.keys(obj).forEach(key => {
+        array = [...array, obj[key]]
+    });
+
+    return array;
+}
