@@ -5,7 +5,7 @@ import { isOjectEmpty, getDate, currentDate, getPrevDate, getNextDate, compareNe
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Modal from '../../components/modal/Modal';
-import ImageCard from '../../components/imageCard/ImageCard';
+import Favourites from '../../components/favourites/Favourites';
 
 import './home.css';
 
@@ -139,36 +139,13 @@ export default function HomeContainer() {
                 <p>{description}</p>
             </div>
             <Modal show={showModal} toggleModal={toggleModal} >
-                <div className="favourites">
-                    <h4>Favourite Images</h4>
-                    {
-                        favouriteImages.length > 0 ?
-                        <React.Fragment>
-                            {
-                                favouriteImages.map(image => {
-                                    const { date } = image;
-                                    return(
-                                        <ImageCard 
-                                            key={date}
-                                            imageData={image}
-                                            viewImage={viewFavouriteImage}
-                                            removeImage={removeFavouriteImage}
-                                        />
-                                    )
-                                })
-                            }
-
-                            <div className="no-favourites">
-                                <button className="btn btn-danger" onClick={deleteFavourites}>Delete All</button>
-                            </div>
-                        </React.Fragment>
-                        :
-                        <div className="no-favourites">
-                            <p>No Favourite images</p>
-                            <button className="btn btn-secondary" onClick={toggleModal}>Close</button>
-                        </div>
-                    }
-                </div>
+                <Favourites 
+                    favouriteImages={favouriteImages}
+                    viewFavouriteImage={viewFavouriteImage}
+                    removeFavouriteImage={removeFavouriteImage}
+                    deleteFavourites={deleteFavourites}
+                    toggleModal={toggleModal}
+                />
             </Modal>
         </div>
     )
