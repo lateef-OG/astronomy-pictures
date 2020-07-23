@@ -46,6 +46,10 @@ i.heart{
     font-size: 24px;
 }
 
+i.red{
+    color: #a83f39;
+}
+
 .favorite-date{
     width: 100%;
     /* padding: 0 10%; */
