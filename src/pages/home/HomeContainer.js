@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getImageData, selectDate} from '../../redux/actions';
-import { isOjectEmpty, getDate, currentDate  } from '../../util/helper';
+import { getImageData, selectDate } from '../../redux/actions';
+import { isOjectEmpty, getDate, currentDate, getPrevDate, getNextDate, compareNextDate  } from '../../util/helper';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 
@@ -24,17 +24,37 @@ export default function HomeContainer() {
         dispatch(getImageData(date));
     }
 
+    const handlePrevDate = () => {
+        const prevDate = getPrevDate(date);
+        setSelectedDate(prevDate);
+        dispatch(selectDate(prevDate));
+
+        dispatch(getImageData(prevDate));
+    }
+
+    const handleNextDate = () => {
+        const nextDate = getNextDate(date);
+        setSelectedDate(nextDate);
+        dispatch(selectDate(nextDate));
+
+        dispatch(getImageData(nextDate));
+    }
+
     // console.log("loading", loading);
-    console.log("imageData", imageData);
+    // console.log("imageData", imageData);
     // console.log("error", error);
-    // console.log("date", date);
+    // console.log("store date", date);
+    // console.log("selected date", selectedDate);
 
     // console.log("empty object", isOjectEmpty({}))
+    // console.log(compareNextDate(date));
+
     let imageName = "";
     let description = "";
     let imageUrl = "";
     let loaderOrError;
     let mediaIsVideo = false;
+    let shouldClickNext = compareNextDate(date)
 
     if(loading){
         loaderOrError = <Loader customClass="loader"/>
@@ -54,7 +74,7 @@ export default function HomeContainer() {
             loaderOrError = (
                 <div className="video-error">
                     <p>There's no image available to display</p>
-                    <a href={url} target="_blank">Watch video</a>
+                    <a href={url} target="_blank" rel="noopener noreferrer">Watch video</a>
                 </div>
             )
         };
@@ -62,7 +82,7 @@ export default function HomeContainer() {
 
     useEffect(() => {
         dispatch(getImageData(date));
-    }, [dispatch]);
+    }, [dispatch, date]);
 
     return (
         <div className="container home-page">
@@ -71,6 +91,7 @@ export default function HomeContainer() {
             <div className="mb-4 picture-div">
                 <Icon 
                     customClass="fas fa-chevron-left arrow"
+                    handleClick={handlePrevDate}
                 />
                 <div className="image-container">
                     {
@@ -81,14 +102,15 @@ export default function HomeContainer() {
                     }
                 </div>
                 <Icon 
-                    customClass="fas fa-chevron-right arrow"
+                    customClass={`fas fa-chevron-right arrow ${shouldClickNext ? '': 'opacity'}`}
+                    handleClick={shouldClickNext ? handleNextDate : null}
                 />
             </div>
             <div className="mb-5 favorite-date">
                 <Icon 
                     customClass="far fa-heart heart"
                 />
-                <input type="date" value={selectedDate} onChange={handleChange}/>
+                <input type="date" value={selectedDate} onChange={handleChange} max={currentDate()}/>
             </div>
             <div className="description">
                 <p>{description}</p>
