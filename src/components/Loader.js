@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const Loader = ({ customClass }) => {
     return (
         <i 
-            class={`fa fa-spinner fa-pulse fa-3x fa-fw ${customClass}`}
+            className={`fa fa-spinner fa-pulse fa-3x fa-fw ${customClass}`}
         />
     )
 }

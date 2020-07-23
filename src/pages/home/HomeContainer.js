@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getImageData } from '../../redux/actions';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 
 import './home.css';
 
 export default function HomeContainer() {
+    const dispatch = useDispatch();
+    
+    const { loading, imageData, error } = useSelector(
+        state => state.image
+    );
+
+    console.log("loading", loading);
+    console.log("imageData", imageData);
+    console.log("error", error);
+    
+    useEffect(() => {
+        dispatch(getImageData());
+    }, [dispatch]);
+
     return (
         <div className="container home-page">
-            <h2 className="mb-4">Nasa picture of the day</h2>
+            <h2 className="mb-4">NASA picture of the day</h2>
             <h4 className="mb-2">Title</h4>
             <div className="mb-4 picture-div">
                 <Icon 

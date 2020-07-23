@@ -1,0 +1,3 @@
+export const MAKE_REQUEST = 'MAKE_REQUEST';
+export const GET_IMAGE_DATA = 'GET_IMAGE_DATA'; 
+export const IMAGE_DATA_ERROR = 'IMAGE_DATA_ERROR';
