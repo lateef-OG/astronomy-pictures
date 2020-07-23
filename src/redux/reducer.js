@@ -4,7 +4,8 @@ import {
     GET_IMAGE_DATA,
     IMAGE_DATA_ERROR,
     TOGGLE_FAVORITE_IMAGE,
-    GET_FAVORITE_IMAGES
+    GET_FAVORITE_IMAGES,
+    DELETE_FAVOURITE_IMAGES,
 } from './actionTypes';
 import { currentDate } from '../util/helper';
 
@@ -29,6 +30,8 @@ const imageReducer = (state = initialState, action) => {
         case TOGGLE_FAVORITE_IMAGE:
             return { ...state, imageData: action.payload.imageData };
         case GET_FAVORITE_IMAGES:
+            return { ...state, favouriteImages: action.payload.favouriteImages }
+        case DELETE_FAVOURITE_IMAGES:
             return { ...state, favouriteImages: action.payload.favouriteImages }
         default:
             return state;

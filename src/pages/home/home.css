@@ -77,3 +77,9 @@ i.red{
     margin-bottom: 20px;
 }
 
+.favourites .no-favourites{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
