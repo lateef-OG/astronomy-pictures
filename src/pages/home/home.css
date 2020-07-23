@@ -38,6 +38,10 @@ i.arrow{
     font-size: 24px;
 }
 
+i.arrow.opacity{
+    opacity: 0.5;
+}
+
 i.heart{
     font-size: 24px;
 }
