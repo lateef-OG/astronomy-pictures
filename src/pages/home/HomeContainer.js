@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getImageData, toggleFavourite, getFavouriteImages } from '../../redux/actions';
+import { getImageData, toggleFavourite, getFavouriteImages, removeFavourites } from '../../redux/actions';
 import { isOjectEmpty, getDate, currentDate, getPrevDate, getNextDate, compareNextDate  } from '../../util/helper';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
@@ -63,6 +63,13 @@ export default function HomeContainer() {
 
     const toggleModal = () => {
         setshowModal(!showModal);
+        dispatch(getFavouriteImages());
+    }
+
+    const deleteFavourites = () => {
+        dispatch(removeFavourites());
+        dispatch(getFavouriteImages());
+        dispatch(getImageData(date));
     }
 
     let imageName = "";
@@ -135,17 +142,31 @@ export default function HomeContainer() {
                 <div className="favourites">
                     <h4>Favourite Images</h4>
                     {
-                        favouriteImages.map(image => {
-                            const { date } = image;
-                            return(
-                                <ImageCard 
-                                    key={date}
-                                    imageData={image}
-                                    viewImage={viewFavouriteImage}
-                                    removeImage={removeFavouriteImage}
-                                />
-                            )
-                        })
+                        favouriteImages.length > 0 ?
+                        <React.Fragment>
+                            {
+                                favouriteImages.map(image => {
+                                    const { date } = image;
+                                    return(
+                                        <ImageCard 
+                                            key={date}
+                                            imageData={image}
+                                            viewImage={viewFavouriteImage}
+                                            removeImage={removeFavouriteImage}
+                                        />
+                                    )
+                                })
+                            }
+
+                            <div className="no-favourites">
+                                <button className="btn btn-danger" onClick={deleteFavourites}>Delete All</button>
+                            </div>
+                        </React.Fragment>
+                        :
+                        <div className="no-favourites">
+                            <p>No Favourite images</p>
+                            <button className="btn btn-secondary" onClick={toggleModal}>Close</button>
+                        </div>
                     }
                 </div>
             </Modal>

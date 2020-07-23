@@ -4,6 +4,7 @@ import {
     IMAGE_DATA_ERROR,
     TOGGLE_FAVORITE_IMAGE,
     GET_FAVORITE_IMAGES,
+    DELETE_FAVOURITE_IMAGES
 } from './actionTypes';
 import { baseUrl } from '../util/url';
 import { ObjectToArray } from '../util/helper';
@@ -54,4 +55,16 @@ export const getFavouriteImages = () => dispatch => {
     const favouriteImages = imagesArray.filter(image => image.isFavourite);
 
     dispatch({ type: GET_FAVORITE_IMAGES, payload: { favouriteImages } })
+}
+
+export const removeFavourites = () => dispatch => {
+    const imagesData = JSON.parse(localStorage.getItem("imagesData")) || {}
+    
+    Object.keys(imagesData).forEach(key => {
+        if (imagesData[key].isFavourite) imagesData[key].isFavourite = false;
+    });
+
+    localStorage.setItem("imagesData", JSON.stringify(imagesData));
+
+    dispatch({ type: DELETE_FAVOURITE_IMAGES, payload: { favouriteImages: [] } })
 }
