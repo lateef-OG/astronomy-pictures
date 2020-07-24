@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getImageData, toggleFavourite, getFavourites, removeFavourites, getPreviewImages } from '../../redux/actions';
 import { isOjectEmpty, getDate, currentDate, getPrevDate, getNextDate, compareNextDate  } from '../../util/helper';
@@ -20,19 +20,6 @@ export default function HomeContainer() {
     const [ showModal, setshowModal ] = useState(false);
 
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        handlePreviewImages();
-        dispatch(getFavourites());
-        dispatch(getImageData(date));
-    }, [dispatch, date]);
-
-    const handlePreviewImages = () => {
-        dispatch(getPreviewImages(getPrevDate(date), 'prev'));
-        if(shouldClickNext){
-            dispatch(getPreviewImages(getNextDate(date), 'next'));
-        }
-    }
 
     const handleChange = e => {
         const date = getDate(e.target.value)
@@ -131,6 +118,19 @@ export default function HomeContainer() {
         prevImageUrl = prev && prev.url;
         prevImageType = prev && prev.media_type;
     }
+
+    const handlePreviewImages = useCallback(() => {
+        dispatch(getPreviewImages(getPrevDate(date), 'prev'));
+        if(shouldClickNext){
+            dispatch(getPreviewImages(getNextDate(date), 'next'));
+        }
+    }, [date, dispatch, shouldClickNext])
+
+    useEffect(() => {
+        handlePreviewImages();
+        dispatch(getFavourites());
+        dispatch(getImageData(date));
+    }, [dispatch, date, handlePreviewImages]);
     
     return (
         <div className="container home-page">
