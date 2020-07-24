@@ -48,7 +48,9 @@ export default function HomeContainer() {
 
     const handleFavouriteToggle = () => {
         dispatch(toggleFavourite(date));
+        dispatch(getImageData(date));
     }
+
     const viewFavouriteImage = (item) => {
         dispatch(getImageData(item));
 
@@ -77,8 +79,9 @@ export default function HomeContainer() {
     let imageUrl = "";
     let loaderOrError;
     let mediaIsVideo = false;
-    let FavouriteImage = false;
+    // let FavouriteImage = false;
     let shouldClickNext = compareNextDate(date);
+    console.log(shouldClickNext);
 
     if(loading){
         loaderOrError = <Loader customClass="loader"/>
@@ -89,10 +92,9 @@ export default function HomeContainer() {
     }
 
     if(!loading && !isOjectEmpty(imageData)){
-        const { title, explanation, url, media_type, isFavourite } = imageData;
+        const { title, explanation, url, media_type } = imageData;
         imageName = title;
         description = explanation;
-        FavouriteImage = isFavourite;
         if (media_type === "image") imageUrl = url;
         if (media_type === "video") {
             mediaIsVideo = true;
@@ -104,6 +106,8 @@ export default function HomeContainer() {
             )
         };
     }
+
+    const FavouriteImage = favouriteImages.find(image => image.date === selectedDate);
 
     return (
         <div className="container home-page">

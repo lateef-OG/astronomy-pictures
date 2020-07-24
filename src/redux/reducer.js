@@ -22,13 +22,13 @@ const initialState = {
 const imageReducer = (state = initialState, action) => {
     switch (action.type) {
         case MAKE_REQUEST: 
-            return { ...state, loading: true, imageData: {}, error: null };
+            return { ...state, loading: true, imageData: {}, error: null, date: action.payload.date };
         case GET_IMAGE_DATA:
-            return { ...state, loading: false, imageData: action.payload.imageData, date: action.payload.date };
+            return { ...state, loading: false, imageData: action.payload.imageData, date: action.payload.date, error: null };
         case IMAGE_DATA_ERROR:
-            return { ...state, loading: false, error: action.payload.error, imageData: {} };
+            return { ...state, loading: false, error: action.payload.error, imageData: {}, date: action.payload.date };
         case TOGGLE_FAVORITE_IMAGE:
-            return { ...state, imageData: action.payload.imageData };
+            return { ...state, favouriteImages: action.payload.favouriteImages };
         case GET_FAVORITE_IMAGES:
             return { ...state, favouriteImages: action.payload.favouriteImages }
         case DELETE_FAVOURITE_IMAGES:
