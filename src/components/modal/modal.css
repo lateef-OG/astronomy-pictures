@@ -29,3 +29,26 @@
     font-weight: 400;
     cursor: pointer;
 }
+
+@media only screen and (min-width: 530px) and (max-width: 949px) {
+    .content{
+        width: 50vw;
+    }
+}
+
+@media only screen and (max-width: 529px) {
+    .overlay{
+        justify-content: center;
+        padding: 5%;
+    }
+    .content{
+        width: 100%;
+        border-radius: 5px;
+        height: 100%;
+        padding: 20px 15px;
+    }
+    .close{
+        top: 4%;
+        right: 8%;
+    }
+}
