@@ -53,7 +53,7 @@ export default function HomeContainer() {
 
     const viewFavouriteImage = (item) => {
         dispatch(getImageData(item));
-
+        setSelectedDate(item);
         setshowModal(!showModal);
     }
 
@@ -105,8 +105,8 @@ export default function HomeContainer() {
         };
     }
 
-    const FavouriteImage = favouriteImages.find(image => image.date === selectedDate);
-
+    const favouriteImage = favouriteImages.find(image => image.date === selectedDate);
+    
     return (
         <div className="container home-page">
             <h2 className="mb-4">NASA picture of the day</h2>
@@ -131,7 +131,7 @@ export default function HomeContainer() {
             </div>
             <div className="mb-5 favorite-date">
                 <Icon 
-                    customClass={FavouriteImage ? "fas fa-heart heart red" : "far fa-heart heart"}
+                    customClass={favouriteImage ? "fas fa-heart heart red" : "far fa-heart heart"}
                     handleClick={loading || error ? null : handleFavouriteToggle}
                 />
                 <button className="btn btn-secondary ml-2" onClick={toggleModal}>View Favorites</button>
