@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ImageCard from '../imageCard/ImageCard';
 
 import './favourites.css';
@@ -36,6 +37,14 @@ const Favourites = ({ favouriteImages, viewFavouriteImage, removeFavouriteImage,
             }
         </div>
     )
+}
+
+Favourites.propType = {
+    favouriteImages: PropTypes.array,
+    viewFavouriteImage: PropTypes.func,
+    removeFavouriteImage: PropTypes.func,
+    deleteFavourites: PropTypes.func,
+    toggleModal: PropTypes.func,
 }
 
 export default Favourites;
