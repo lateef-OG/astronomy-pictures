@@ -62,8 +62,12 @@ i.red{
     align-items: center;
 }
 
-.favorite-date input{
+.favorite-date label{
     margin-left: auto;
+}
+
+.favorite-date label > input{
+    margin-left: 10px;
 }
 
 .favorite-date button{
@@ -134,9 +138,15 @@ i.red{
         flex-wrap: wrap;
     }
     
-    .favorite-date input{
+    .favorite-date label{
         margin-left: initial;
         margin-top: 30px;
+        text-align: center;
+    }
+    
+    .favorite-date label > input{
+        margin-left: 0;
+        display: block;
     }
 
     .favorite-date button{
