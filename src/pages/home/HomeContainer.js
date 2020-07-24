@@ -167,7 +167,9 @@ export default function HomeContainer() {
                     handleClick={loading || error ? null : handleFavouriteToggle}
                 />
                 <button className="btn btn-secondary" onClick={toggleModal}>View Favorites</button>
-                <input type="date" value={selectedDate} onChange={handleChange} max={currentDate()}/>
+                <label htmlFor="date">Select a date
+                    <input type="date" id="date" value={selectedDate} onChange={handleChange} max={currentDate()}/>
+                </label>
             </div>
             <div className="description">
                 <p>{description}</p>
