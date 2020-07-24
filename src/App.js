@@ -7,6 +7,9 @@ import './App.css';
 function App() {
   return (
     <Provider store={store}>
+      <header className="App-header">
+        NASA picture of the day
+      </header>
       <HomeContainer />
     </Provider>
   );

@@ -6,10 +6,9 @@ import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Modal from '../../components/modal/Modal';
 import Favourites from '../../components/favourites/Favourites';
-import previewImages from '../../components/previewImages/PreviewImages';
+import PreviewImages from '../../components/previewImages/PreviewImages';
 
 import './home.css';
-import PreviewImages from '../../components/previewImages/PreviewImages';
 
 export default function HomeContainer() {
     
@@ -23,9 +22,9 @@ export default function HomeContainer() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        handlePreviewImages();
         dispatch(getFavourites());
         dispatch(getImageData(date));
-        handlePreviewImages();
     }, [dispatch, date]);
 
     const handlePreviewImages = () => {
@@ -132,12 +131,9 @@ export default function HomeContainer() {
         prevImageUrl = prev && prev.url;
         prevImageType = prev && prev.media_type;
     }
-
-    console.log(nextImageUrl, nextImageType, prevImageUrl, prevImageType)
     
     return (
         <div className="container home-page">
-            <h2 className="mb-4">NASA picture of the day</h2>
             <h4 className="mb-2">{imageName}</h4>
             <div className="mb-4 picture-div">
                 <Icon 
