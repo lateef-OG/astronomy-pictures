@@ -134,7 +134,7 @@ export default function HomeContainer() {
     
     return (
         <div className="container home-page">
-            <h4 className="mb-2">{imageName}</h4>
+            <h4>{imageName}</h4>
             <div className="mb-4 picture-div">
                 <Icon 
                     customClass="fas fa-chevron-left arrow"
@@ -145,7 +145,7 @@ export default function HomeContainer() {
                         loading || error || mediaIsVideo?
                         loaderOrError
                         :
-                        <img src={imageUrl} alt={imageName}/>
+                        <img src={imageUrl} alt={imageName} className="img-fluid"/>
                     }
                 </div>
                 <Icon 
@@ -166,7 +166,7 @@ export default function HomeContainer() {
                     customClass={favouriteImage ? "fas fa-heart heart red" : "far fa-heart heart"}
                     handleClick={loading || error ? null : handleFavouriteToggle}
                 />
-                <button className="btn btn-secondary ml-2" onClick={toggleModal}>View Favorites</button>
+                <button className="btn btn-secondary" onClick={toggleModal}>View Favorites</button>
                 <input type="date" value={selectedDate} onChange={handleChange} max={currentDate()}/>
             </div>
             <div className="description">
