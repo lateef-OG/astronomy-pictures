@@ -5,7 +5,7 @@ import { isOjectEmpty, getDate, currentDate, getPrevDate, getNextDate, compareNe
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Modal from '../../components/modal/Modal';
-import ImageCard from '../../components/imageCard/ImageCard';
+import Favourites from '../../components/favourites/Favourites';
 
 import './home.css';
 
@@ -48,7 +48,9 @@ export default function HomeContainer() {
 
     const handleFavouriteToggle = () => {
         dispatch(toggleFavourite(date));
+        dispatch(getImageData(date));
     }
+
     const viewFavouriteImage = (item) => {
         dispatch(getImageData(item));
 
@@ -77,7 +79,6 @@ export default function HomeContainer() {
     let imageUrl = "";
     let loaderOrError;
     let mediaIsVideo = false;
-    let FavouriteImage = false;
     let shouldClickNext = compareNextDate(date);
 
     if(loading){
@@ -89,10 +90,9 @@ export default function HomeContainer() {
     }
 
     if(!loading && !isOjectEmpty(imageData)){
-        const { title, explanation, url, media_type, isFavourite } = imageData;
+        const { title, explanation, url, media_type } = imageData;
         imageName = title;
         description = explanation;
-        FavouriteImage = isFavourite;
         if (media_type === "image") imageUrl = url;
         if (media_type === "video") {
             mediaIsVideo = true;
@@ -104,6 +104,8 @@ export default function HomeContainer() {
             )
         };
     }
+
+    const FavouriteImage = favouriteImages.find(image => image.date === selectedDate);
 
     return (
         <div className="container home-page">
@@ -139,36 +141,13 @@ export default function HomeContainer() {
                 <p>{description}</p>
             </div>
             <Modal show={showModal} toggleModal={toggleModal} >
-                <div className="favourites">
-                    <h4>Favourite Images</h4>
-                    {
-                        favouriteImages.length > 0 ?
-                        <React.Fragment>
-                            {
-                                favouriteImages.map(image => {
-                                    const { date } = image;
-                                    return(
-                                        <ImageCard 
-                                            key={date}
-                                            imageData={image}
-                                            viewImage={viewFavouriteImage}
-                                            removeImage={removeFavouriteImage}
-                                        />
-                                    )
-                                })
-                            }
-
-                            <div className="no-favourites">
-                                <button className="btn btn-danger" onClick={deleteFavourites}>Delete All</button>
-                            </div>
-                        </React.Fragment>
-                        :
-                        <div className="no-favourites">
-                            <p>No Favourite images</p>
-                            <button className="btn btn-secondary" onClick={toggleModal}>Close</button>
-                        </div>
-                    }
-                </div>
+                <Favourites 
+                    favouriteImages={favouriteImages}
+                    viewFavouriteImage={viewFavouriteImage}
+                    removeFavouriteImage={removeFavouriteImage}
+                    deleteFavourites={deleteFavourites}
+                    toggleModal={toggleModal}
+                />
             </Modal>
         </div>
     )
