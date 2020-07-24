@@ -19,7 +19,9 @@ export const getImageData = date => dispatch => {
     }
 
     const cancelToken = axios.CancelToken.source();
+
     dispatch({ type: MAKE_REQUEST, payload: { date } });
+    
     axios.get(`${baseUrl}?api_key=${API_KEY}&date=${date}`, {
         cancelToken: cancelToken.token,
     }).then(res => {
