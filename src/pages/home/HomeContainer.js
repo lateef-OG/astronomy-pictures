@@ -79,9 +79,7 @@ export default function HomeContainer() {
     let imageUrl = "";
     let loaderOrError;
     let mediaIsVideo = false;
-    // let FavouriteImage = false;
     let shouldClickNext = compareNextDate(date);
-    console.log(shouldClickNext);
 
     if(loading){
         loaderOrError = <Loader customClass="loader"/>
