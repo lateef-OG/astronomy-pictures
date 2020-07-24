@@ -6,8 +6,10 @@ import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Modal from '../../components/modal/Modal';
 import Favourites from '../../components/favourites/Favourites';
+import previewImages from '../../components/previewImages/PreviewImages';
 
 import './home.css';
+import PreviewImages from '../../components/previewImages/PreviewImages';
 
 export default function HomeContainer() {
     
@@ -155,32 +157,14 @@ export default function HomeContainer() {
                     handleClick={shouldClickNext ? handleNextDate : null}
                 />
             </div>
-            <div className="preview-images">
-                <div className="preview-image">
-                    {
-                        prevImageType === "image" ?
-                        <img src={prevImageUrl} alt="previous day"/> 
-                        :
-                        <p>No image</p>
-                    }
-                </div>
-                <div className="preview-image active">
-                    {
-                        mediaType === "image" ?
-                        <img src={imageUrl} alt="today"/> 
-                        :
-                        <p>...</p>
-                    }
-                </div>
-                <div className="preview-image">
-                    {
-                        nextImageType === "image" ?
-                        <img src={nextImageUrl} alt="next day"/> 
-                        :
-                        <p>No image</p>
-                    }
-                </div>
-            </div>
+            <PreviewImages
+                prevImageType={prevImageType}
+                prevImageUrl={prevImageUrl}
+                mediaType={mediaType}
+                imageUrl={imageUrl}
+                nextImageType={nextImageType}
+                nextImageUrl={nextImageUrl}
+            />
             <div className="mb-5 favorite-date">
                 <Icon 
                     customClass={favouriteImage ? "fas fa-heart heart red" : "far fa-heart heart"}
