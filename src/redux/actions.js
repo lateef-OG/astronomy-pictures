@@ -11,7 +11,7 @@ import axios from 'axios';
 
 const API_KEY = process.env.REACT_APP_NASA_APOD_KEY;
 
-export const getImageData = date => dispatch => {
+export const getImageData = date => async dispatch => {
     const imagesData = JSON.parse(localStorage.getItem("imagesData")) || {}
     if(imagesData[date]) {
         dispatch({ type: GET_IMAGE_DATA, payload: { imageData: imagesData[date], date} })
@@ -22,7 +22,7 @@ export const getImageData = date => dispatch => {
 
     dispatch({ type: MAKE_REQUEST, payload: { date } });
     
-    axios.get(`${baseUrl}?api_key=${API_KEY}&date=${date}`, {
+    await axios.get(`${baseUrl}?api_key=${API_KEY}&date=${date}`, {
         cancelToken: cancelToken.token,
     }).then(res => {
         dispatch({ type: GET_IMAGE_DATA, payload: { imageData: res.data, date  } })
