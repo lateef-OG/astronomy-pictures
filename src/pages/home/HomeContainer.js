@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getImageData, toggleFavourite, getFavouriteImages, removeFavourites } from '../../redux/actions';
+import { getImageData, toggleFavourite, getFavourites, removeFavourites, getPreviewImages } from '../../redux/actions';
 import { isOjectEmpty, getDate, currentDate, getPrevDate, getNextDate, compareNextDate  } from '../../util/helper';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
@@ -11,7 +11,7 @@ import './home.css';
 
 export default function HomeContainer() {
     
-    const { loading, imageData, error, date, favouriteImages } = useSelector(
+    const { loading, imageData, error, date, favouriteImages, previewImages } = useSelector(
         state => state.image
     );
 
@@ -21,9 +21,17 @@ export default function HomeContainer() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getFavouriteImages());
+        dispatch(getFavourites());
         dispatch(getImageData(date));
+        handlePreviewImages();
     }, [dispatch, date]);
+
+    const handlePreviewImages = () => {
+        dispatch(getPreviewImages(getPrevDate(date), 'prev'));
+        if(shouldClickNext){
+            dispatch(getPreviewImages(getNextDate(date), 'next'));
+        }
+    }
 
     const handleChange = e => {
         const date = getDate(e.target.value)
@@ -59,18 +67,18 @@ export default function HomeContainer() {
 
     const removeFavouriteImage = (item) => {
         dispatch(toggleFavourite(item));
-        dispatch(getFavouriteImages());
+        dispatch(getFavourites());
         dispatch(getImageData(date));
     }
 
     const toggleModal = () => {
         setshowModal(!showModal);
-        dispatch(getFavouriteImages());
+        dispatch(getFavourites());
     }
 
     const deleteFavourites = () => {
         dispatch(removeFavourites());
-        dispatch(getFavouriteImages());
+        dispatch(getFavourites());
         dispatch(getImageData(date));
     }
 
@@ -79,6 +87,7 @@ export default function HomeContainer() {
     let imageUrl = "";
     let loaderOrError;
     let mediaIsVideo = false;
+    let mediaType = "";
     let shouldClickNext = compareNextDate(date);
 
     if(loading){
@@ -93,6 +102,7 @@ export default function HomeContainer() {
         const { title, explanation, url, media_type } = imageData;
         imageName = title;
         description = explanation;
+        mediaType = media_type;
         if (media_type === "image") imageUrl = url;
         if (media_type === "video") {
             mediaIsVideo = true;
@@ -106,6 +116,22 @@ export default function HomeContainer() {
     }
 
     const favouriteImage = favouriteImages.find(image => image.date === selectedDate);
+
+    //preview images
+    let nextImageUrl = "";
+    let nextImageType = "";
+    let prevImageUrl = "";
+    let prevImageType = "";
+
+    if (!isOjectEmpty(previewImages)){
+        const { next, prev } = previewImages;
+        nextImageUrl = next && next.url;
+        nextImageType = next && next.media_type;
+        prevImageUrl = prev && prev.url;
+        prevImageType = prev && prev.media_type;
+    }
+
+    console.log(nextImageUrl, nextImageType, prevImageUrl, prevImageType)
     
     return (
         <div className="container home-page">
@@ -128,6 +154,32 @@ export default function HomeContainer() {
                     customClass={`fas fa-chevron-right arrow ${shouldClickNext ? '': 'opacity'}`}
                     handleClick={shouldClickNext ? handleNextDate : null}
                 />
+            </div>
+            <div className="preview-images">
+                <div className="preview-image">
+                    {
+                        prevImageType === "image" ?
+                        <img src={prevImageUrl} alt="previous day"/> 
+                        :
+                        <p>No image</p>
+                    }
+                </div>
+                <div className="preview-image active">
+                    {
+                        mediaType === "image" ?
+                        <img src={imageUrl} alt="today"/> 
+                        :
+                        <p>...</p>
+                    }
+                </div>
+                <div className="preview-image">
+                    {
+                        nextImageType === "image" ?
+                        <img src={nextImageUrl} alt="next day"/> 
+                        :
+                        <p>No image</p>
+                    }
+                </div>
             </div>
             <div className="mb-5 favorite-date">
                 <Icon 

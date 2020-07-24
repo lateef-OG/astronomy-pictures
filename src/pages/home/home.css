@@ -72,3 +72,28 @@ i.red{
     text-align: center;
 }
 
+.preview-images{
+    width: 60%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 15px;
+}
+
+.preview-image{
+    height: 100px;
+    background: #999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-image img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.preview-image.active{
+    border: solid 3px #000000;
+}
+
